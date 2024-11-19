@@ -1,7 +1,7 @@
 import 'package:finance/presentation/blocs/home/home_event.dart';
-import 'package:finance/presentation/widgets/PaiemntItem.dart';
-import 'package:finance/presentation/widgets/VerticalMargin.dart';
-import 'package:finance/presentation/widgets/HorizontalMargin.dart';
+import 'package:finance/presentation/widgets/paiement_item.dart';
+import 'package:finance/presentation/widgets/vertical_margin.dart';
+import 'package:finance/presentation/widgets/horizontal_margin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/presentation/blocs/home/home_bloc.dart';
@@ -18,86 +18,155 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => HomeBloc()..add(HomeEvent()),
-        child: BlocBuilder<HomeBloc, HomeState>(
-            builder: (BuildContext context, state) {
-          if (state is HomeStateInitial) {
-            return Scaffold(
-              backgroundColor: Colors.black,
-              appBar: AppBar(
-                backgroundColor: Colors.black,
-                //Row de l'AppBar
-                title: const Row(
-                  children: [
-                    CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
-                        child: Icon(Icons.person, size: 30)),
-                    HorizontalMargin(ratio: 0.04),
-                    Text("Bienvenue Tibo",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ))
-                  ],
-                ),
+      create: (context) => HomeBloc()..add(HomeEvent()),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (BuildContext context, state) {
+          return Scaffold(
+            backgroundColor: const Color(0xFF151433),
+            appBar: AppBar(
+              backgroundColor: const Color(0xFF151433),
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 20,
+                    child: Icon(Icons.person, size: 30),
+                  ),
+                  Horirontalmargin(ratio: 0.04),
+                  Text(
+                    "Bienvenue Tibo",
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              body: Center(
-                //Colonne du reste de l'app
-                child: Column(
-                  children: [
-                    //Stat argent depasser ce mois-ci
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.35,
-                        child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 150,
-                            child: Text(state.totalMois.toString() + " €",
-                                style: const TextStyle(
+              actions: [
+                //Bouton ajout paiement
+                IconButton(
+                  icon: const Icon(Icons.add, color: Colors.white, size: 30),
+                  onPressed: () {
+                    //Envoie vers l'utilisateur sur la page ajout d'un paiement
+                  },
+                ),
+              ],
+            ),
+            body: Stack(
+              children: [
+                // Contenu principal
+                if (state is HomeStateInitial)
+                  Center(
+                    //Colonne de l'app
+                    child: Column(
+                      children: [
+                        const Verticalmargin(ratio: 0.02),
+                        //partie haute avec cercle info générale de ce mois-ci
+                        Container(
+                          color: const Color(0xFF151433),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          child: Center(
+                            // Centrer le cercle
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  //diametre externe
+                                  width: 250,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.grey.withOpacity(0.1),
+                                        Colors.grey.withOpacity(0.5),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // Cercle intérieur blanc
+                                CircleAvatar(
+                                  backgroundColor: const Color(0xFF151433),
+                                  radius: 100,
+                                  child: Text(
+                                    '${state.totalMois} €',
+                                    style: const TextStyle(
+                                      fontSize: 26,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const Verticalmargin(ratio: 0.03),
+
+                        // Partie basse avec la liste des transactions
+                        Container(
+                          color: const Color(0xFF221F4A),
+                          height: MediaQuery.of(context).size.height * 0.543,
+                          child: Column(
+                            children: [
+                              const Verticalmargin(ratio: 0.03),
+                              const Text(
+                                "Listes des transactions ce mois",
+                                style: TextStyle(
                                   fontSize: 26,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                )))),
-                    //espace entre les deux
-                    VerticalMargin(ratio: 0.02),
-                    //Colonne détail des transaction
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: Column(
-                        children: [
-                          const Text("Listes des transactions ce mois",
-                              style: const TextStyle(
-                                fontSize: 26,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          VerticalMargin(ratio: 0.02),
-                          //Si la liste des transactions est vide on préviens l'utilisateur sinon on affiche la liste
-                          //Pour chaque paiement on affiche un items custom avec un items paiement en paramètre
-                          state.collectionPaiement.length == 0
-                              ? Text(
-                                  "Aucun paiement n'a été trouver pour ce mois-ci",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ))
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: state.collectionPaiement.length,
-                                  itemBuilder: (context, index) {
-                                    return PaiementItem(
-                                        item: state.collectionPaiement[index]);
-                                  })
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return const Center(child: Text("Une erreur est survenue."));
-          }
-        }));
+                                ),
+                              ),
+                              const Verticalmargin(ratio: 0.02),
+                              state.collectionPaiement.isEmpty
+                                  ? const Text(
+                                      "Aucun paiement n'a été trouvé pour ce mois-ci",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            state.collectionPaiement.length,
+                                        itemBuilder: (context, index) {
+                                          return PaiementItem(
+                                            item:
+                                                state.collectionPaiement[index],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                // Loader superposé
+                if (state is HomeLoading)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
