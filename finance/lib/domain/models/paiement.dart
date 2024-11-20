@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Paiement {
-  final int? idPaiement;
+  final String? idPaiement;
   final double montant;
   final String motif;
   final String commentaire;
@@ -9,7 +9,7 @@ class Paiement {
 
   /* Constructeur vide */
   Paiement.empty()
-      : idPaiement = 0,
+      : idPaiement = "",
         montant = 0.0,
         motif = '',
         commentaire = '',

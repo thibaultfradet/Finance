@@ -3,6 +3,7 @@ import 'package:finance/presentation/pages/ajout_paiement.dart';
 import 'package:finance/presentation/widgets/paiement_item.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:finance/presentation/widgets/horizontal_margin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/presentation/blocs/home/home_bloc.dart';
@@ -46,6 +47,22 @@ class _HomeState extends State<Home> {
                 ],
               ),
               actions: [
+                IconButton(
+                  icon: const Icon(
+                    CupertinoIcons.chart_bar_alt_fill,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    //Envoie vers l'utilisateur sur la page ajout d'un paiement
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AjoutPaiement(),
+                      ),
+                    );
+                  },
+                ),
                 //Bouton ajout paiement
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white, size: 30),
@@ -101,7 +118,7 @@ class _HomeState extends State<Home> {
                                   backgroundColor: const Color(0xFF151433),
                                   radius: 100,
                                   child: Text(
-                                    '${state.totalMois} €',
+                                    '${state.totalMois.toStringAsFixed(2)} €',
                                     style: const TextStyle(
                                       fontSize: 26,
                                       color: Colors.white,

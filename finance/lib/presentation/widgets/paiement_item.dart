@@ -76,7 +76,7 @@ class _PaiementItemState extends State<PaiementItem> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              widget.item.montant.toString(),
+              "${widget.item.montant} €",
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

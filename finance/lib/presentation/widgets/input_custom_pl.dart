@@ -5,12 +5,14 @@ class InputCustomPL extends StatelessWidget {
   final String placeholder;
   final bool? isObscure;
   final bool? enable;
+  final bool? isDouble;
   const InputCustomPL({
     super.key,
     required this.controllerPL,
     required this.placeholder,
     this.isObscure,
     this.enable,
+    this.isDouble,
   });
 
   @override
@@ -18,9 +20,13 @@ class InputCustomPL extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
-        enabled: enable, // Active/desactiver en fonction du paramètre
+        keyboardType: isDouble != null
+            ? const TextInputType.numberWithOptions(decimal: true)
+            : TextInputType.text,
+        enabled: enable, // Active/désactive en fonction du paramètre
         controller: controllerPL,
         obscureText: isObscure == null ? false : isObscure!,
+        style: const TextStyle(color: Colors.white), // Texte écrit en blanc
         decoration: InputDecoration(
           labelText: placeholder,
           labelStyle: const TextStyle(

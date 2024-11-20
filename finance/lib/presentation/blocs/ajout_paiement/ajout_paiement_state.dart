@@ -9,3 +9,7 @@ class AjoutpaiementStateInitial extends AjoutpaiementState {
 class APELoading extends AjoutpaiementState {
   const APELoading() : super();
 }
+
+class APESuccess extends AjoutpaiementState {
+  const APESuccess() : super();
+}
