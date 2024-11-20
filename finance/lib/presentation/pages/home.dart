@@ -1,4 +1,5 @@
 import 'package:finance/presentation/blocs/home/home_event.dart';
+import 'package:finance/presentation/pages/ajout_paiement.dart';
 import 'package:finance/presentation/widgets/paiement_item.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:finance/presentation/widgets/horizontal_margin.dart';
@@ -50,6 +51,12 @@ class _HomeState extends State<Home> {
                   icon: const Icon(Icons.add, color: Colors.white, size: 30),
                   onPressed: () {
                     //Envoie vers l'utilisateur sur la page ajout d'un paiement
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AjoutPaiement(),
+                      ),
+                    );
                   },
                 ),
               ],

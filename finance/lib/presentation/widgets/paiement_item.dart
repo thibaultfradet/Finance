@@ -1,5 +1,7 @@
+import 'package:finance/presentation/widgets/horizontal_margin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:finance/domain/paiement.dart';
+import 'package:finance/domain/models/paiement.dart';
 
 class PaiementItem extends StatefulWidget {
   final Paiement item;
@@ -13,23 +15,34 @@ class _PaiementItemState extends State<PaiementItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
       decoration: BoxDecoration(
         // color: Colors.white,
         color: const Color(0xFF151433),
         border: Border.all(width: 1.5),
         borderRadius: BorderRadius.circular(20),
       ),
-      width: MediaQuery.of(context).size.width * 0.7,
-      height: MediaQuery.of(context).size.height * 0.1,
       //Row de tout l'item
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            alignment: Alignment.center,
+            width: 50,
+            height: 50,
+            child: const CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 20,
+              child: Icon(CupertinoIcons.cart, size: 30),
+            ),
+          ),
+          const Horirontalmargin(ratio: 0.07),
           //Colonne titre/date
           Container(
+            alignment: Alignment.centerLeft,
             color: Colors.amber,
-            width: MediaQuery.of(context).size.width * 0.35,
+            width: MediaQuery.of(context).size.width * 0.4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +64,9 @@ class _PaiementItemState extends State<PaiementItem> {
               ],
             ),
           ),
+          const Horirontalmargin(ratio: 0.15),
           //Container montant
+
           Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width * 0.2,

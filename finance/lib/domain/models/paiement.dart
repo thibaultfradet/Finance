@@ -1,27 +1,65 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Paiement {
-  final int id;
+  final int? idPaiement;
   final double montant;
   final String motif;
   final String commentaire;
   final DateTime datePaiement;
 
+  /* Constructeur vide */
   Paiement.empty()
-      : id = 0,
+      : idPaiement = 0,
         montant = 0.0,
         motif = '',
         commentaire = '',
         datePaiement = DateTime.now();
 
+  /* Constructeur surcharger */
   Paiement({
-    required this.id,
+    this.idPaiement,
     required this.montant,
     required this.motif,
     required this.commentaire,
     required this.datePaiement,
   });
 
+  /* FONCTION DE CONVERSION */
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'commentaire': commentaire,
+      'datePaiement': datePaiement,
+      'idPaiement': idPaiement,
+      'montant': montant,
+      'motif': motif,
+    };
+  }
+
+  factory Paiement.fromJSON(Map<String, dynamic> json) {
+    return Paiement(
+      idPaiement: json["idPaiement"],
+      montant: json["montant"],
+      motif: json["motif"],
+      commentaire: json["commentaire"],
+      datePaiement: (json['datePaiement'] as Timestamp).toDate(),
+    );
+  }
+
+  /* CRUD ET AUTRE */
+
+  Future<void> createPaiement(Paiement paiementCreate) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    // DocumentReference doc = await db.collection("paiments").doc();
+
+    // doc.set()
+
+    DocumentReference docRef =
+        await db.collection("paiements").add(paiementCreate.toFirestore());
+    await docRef.update({'idPaiement': docRef.id});
+  }
+
+  /* Fonction findAllPaiement qui retourne la liste de touts les paiements existant dans la base de données */
   Future<List<Paiement>> findAllPaiement() async {
     List<Paiement> collectionPaiement = [];
     CollectionReference paiementsRef =
@@ -29,18 +67,13 @@ class Paiement {
 
     QuerySnapshot snapshot = await paiementsRef.get();
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement(
-        id: int.tryParse(doc.id) ?? 0,
-        montant: doc['montant'],
-        motif: doc['motif'],
-        commentaire: doc['commentaire'],
-        datePaiement: (doc['datePaiement'] as Timestamp).toDate(),
-      );
+      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;
   }
 
+  /* Fonction findAllPaiementThisMont qui se base sur le mois actuelle et retourne la liste des paiements lier ce mois-ci dans la base de données */
   Future<List<Paiement>> findAllPaiementThisMonth() async {
     List<Paiement> collectionPaiement = [];
     CollectionReference paiementsRef =
@@ -57,18 +90,16 @@ class Paiement {
         .get();
 
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement(
-        id: int.tryParse(doc.id) ?? 0,
-        montant: doc['montant'],
-        motif: doc['motif'],
-        commentaire: doc['commentaire'],
-        datePaiement: (doc['datePaiement'] as Timestamp).toDate(),
-      );
+      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;
   }
 
+  /* 
+  Fonction findAllPaiementByMonthandYear qui prend en paramètre deux int qui sont les mois et l'année et retourne la 
+  liste de paiement associer à ces deux informations depuis la base de donénes 
+  */
   Future<List<Paiement>> findAllPaiementByMonthAndYear(
       int month, int year) async {
     List<Paiement> collectionPaiement = [];
@@ -92,13 +123,7 @@ class Paiement {
         .get();
 
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement(
-        id: int.tryParse(doc.id) ?? 0,
-        montant: doc['montant'],
-        motif: doc['motif'],
-        commentaire: doc['commentaire'],
-        datePaiement: (doc['datePaiement'] as Timestamp).toDate(),
-      );
+      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;

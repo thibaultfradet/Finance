@@ -7,5 +7,9 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
     on<AjoutpaiementEvent>((event, emit) {
       emit(const AjoutpaiementStateInitial());
     });
+    on<APEventCreate>((event, emit) {
+      // on emet un loading le temps du traitement
+      emit(const APELoading());
+    });
   }
 }

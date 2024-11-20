@@ -1,4 +1,4 @@
-import 'package:finance/domain/paiement.dart';
+import 'package:finance/domain/models/paiement.dart';
 
 abstract class HomeState {
   const HomeState();

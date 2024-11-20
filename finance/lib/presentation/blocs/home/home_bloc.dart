@@ -1,7 +1,7 @@
 import 'package:finance/presentation/blocs/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/presentation/blocs/home/home_event.dart';
-import 'package:finance/domain/paiement.dart';
+import 'package:finance/domain/models/paiement.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeStateInitial([], 0)) {
