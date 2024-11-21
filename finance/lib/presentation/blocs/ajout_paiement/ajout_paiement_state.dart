@@ -13,3 +13,7 @@ class APELoading extends AjoutpaiementState {
 class APESuccess extends AjoutpaiementState {
   const APESuccess() : super();
 }
+
+class APEFailure extends AjoutpaiementState {
+  const APEFailure() : super();
+}

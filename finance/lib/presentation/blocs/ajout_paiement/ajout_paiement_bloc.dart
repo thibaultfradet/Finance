@@ -20,8 +20,12 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
         motif: event.motif,
       );
 
-      paiementTemp.createPaiement(paiementTemp);
-
+      try {
+        paiementTemp.createPaiement(paiementTemp);
+      } catch (e) {
+        emit(const APEFailure());
+        return;
+      }
       //on emit un success pour push l'utilisateur avec un context
       emit(const APESuccess());
     });

@@ -16,6 +16,7 @@ class _PaiementItemState extends State<PaiementItem> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
+      width: MediaQuery.of(context).size.width * 0.89,
       decoration: BoxDecoration(
         // color: Colors.white,
         color: const Color(0xFF151433),
@@ -37,11 +38,9 @@ class _PaiementItemState extends State<PaiementItem> {
               child: Icon(CupertinoIcons.cart, size: 30),
             ),
           ),
-          const Horirontalmargin(ratio: 0.07),
+          const Horirontalmargin(ratio: 0.025),
           //Colonne titre/date
-          Container(
-            alignment: Alignment.centerLeft,
-            color: Colors.amber,
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +55,7 @@ class _PaiementItemState extends State<PaiementItem> {
                   ),
                 ),
                 Text(
-                  widget.item.datePaiement.toString(),
+                  '${widget.item.datePaiement.year}/${widget.item.datePaiement.month.toString().padLeft(2, '0')}/${widget.item.datePaiement.day.toString().padLeft(2, '0')}',
                   style: const TextStyle(
                     color: Colors.white,
                   ),
@@ -64,9 +63,9 @@ class _PaiementItemState extends State<PaiementItem> {
               ],
             ),
           ),
-          const Horirontalmargin(ratio: 0.15),
-          //Container montant
+          const Horirontalmargin(ratio: 0.1),
 
+          //Container montant
           Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width * 0.2,

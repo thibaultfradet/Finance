@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
             appBar: AppBar(
               backgroundColor: const Color(0xFF151433),
               title: const Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CircleAvatar(
@@ -35,7 +36,7 @@ class _HomeState extends State<Home> {
                     radius: 20,
                     child: Icon(Icons.person, size: 30),
                   ),
-                  Horirontalmargin(ratio: 0.04),
+                  Horirontalmargin(ratio: 0.02),
                   Text(
                     "Bienvenue Tibo",
                     style: TextStyle(
@@ -165,9 +166,23 @@ class _HomeState extends State<Home> {
                                         itemCount:
                                             state.collectionPaiement.length,
                                         itemBuilder: (context, index) {
-                                          return PaiementItem(
-                                            item:
-                                                state.collectionPaiement[index],
+                                          return SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.90,
+                                            child: Column(
+                                              children: [
+                                                PaiementItem(
+                                                  item:
+                                                      state.collectionPaiement[
+                                                          index],
+                                                ),
+                                                const Verticalmargin(
+                                                  ratio: 0.02,
+                                                ),
+                                              ],
+                                            ),
                                           );
                                         },
                                       ),

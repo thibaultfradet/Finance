@@ -2,6 +2,7 @@ import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_bloc.da
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_event.dart';
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_state.dart';
 import 'package:finance/presentation/pages/home.dart';
+
 import 'package:finance/presentation/widgets/bouton_custom.dart';
 import 'package:finance/presentation/widgets/input_custom_pl.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
@@ -30,10 +31,9 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
         if (state is APESuccess) {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const Home()),
+                  (Route route) => false);
             },
           );
         }

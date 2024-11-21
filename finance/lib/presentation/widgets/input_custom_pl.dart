@@ -20,6 +20,7 @@ class InputCustomPL extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
+        enableInteractiveSelection: false,
         keyboardType: isDouble != null
             ? const TextInputType.numberWithOptions(decimal: true)
             : TextInputType.text,
