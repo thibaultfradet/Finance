@@ -1,9 +1,12 @@
+import 'package:finance/domain/models/categorie.dart';
+
 abstract class AjoutpaiementState {
   const AjoutpaiementState();
 }
 
 class AjoutpaiementStateInitial extends AjoutpaiementState {
-  const AjoutpaiementStateInitial() : super();
+  final List<Categorie> categorieDisponible;
+  const AjoutpaiementStateInitial(this.categorieDisponible) : super();
 }
 
 class APELoading extends AjoutpaiementState {

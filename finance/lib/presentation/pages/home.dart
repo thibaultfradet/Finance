@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
                         // Partie basse avec la liste des transactions
                         Container(
                           color: const Color(0xFF221F4A),
-                          height: MediaQuery.of(context).size.height * 0.543,
+                          height: MediaQuery.of(context).size.height * 0.541,
                           child: Column(
                             children: [
                               const Verticalmargin(ratio: 0.03),
