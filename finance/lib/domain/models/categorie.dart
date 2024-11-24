@@ -30,7 +30,7 @@ class Categorie {
   Future<List<Categorie>> findAllCategorie() async {
     List<Categorie> collectionCategorie = [];
     CollectionReference paiementsRef =
-        FirebaseFirestore.instance.collection('paiements');
+        FirebaseFirestore.instance.collection('categories');
 
     QuerySnapshot snapshot = await paiementsRef.get();
     for (var doc in snapshot.docs) {
@@ -39,5 +39,15 @@ class Categorie {
       collectionCategorie.add(categorieTemp);
     }
     return collectionCategorie;
+  }
+
+  Future<Categorie> retrieveCategorie(String idCategorie) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final docCategorie = db.collection("categories").doc(idCategorie);
+
+    var getDataCategorie = await docCategorie.get();
+    Map<String, dynamic>? dataInstrument = getDataCategorie.data();
+
+    return Categorie.fromJSON(dataInstrument!);
   }
 }

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance/domain/models/categorie.dart';
 
 class Paiement {
   final String? idPaiement;
   final double montant;
-  final String motif;
+  final Categorie categorieAssocier;
   final String commentaire;
   final DateTime datePaiement;
 
@@ -11,7 +12,7 @@ class Paiement {
   Paiement.empty()
       : idPaiement = "",
         montant = 0.0,
-        motif = '',
+        categorieAssocier = Categorie.empty(),
         commentaire = '',
         datePaiement = DateTime.now();
 
@@ -19,7 +20,7 @@ class Paiement {
   Paiement({
     this.idPaiement,
     required this.montant,
-    required this.motif,
+    required this.categorieAssocier,
     required this.commentaire,
     required this.datePaiement,
   });
@@ -32,15 +33,16 @@ class Paiement {
       'datePaiement': datePaiement,
       'idPaiement': idPaiement,
       'montant': montant,
-      'motif': motif,
+      'categorie': categorieAssocier.idCategorie,
     };
   }
 
-  factory Paiement.fromJSON(Map<String, dynamic> json) {
+  Future<Paiement> paiementFromJSON(Map<String, dynamic> json) async {
     return Paiement(
       idPaiement: json["idPaiement"],
       montant: json["montant"],
-      motif: json["motif"],
+      categorieAssocier:
+          await Categorie.empty().retrieveCategorie(json["idCategorie"]),
       commentaire: json["commentaire"],
       datePaiement: (json['datePaiement'] as Timestamp).toDate(),
     );
@@ -67,7 +69,8 @@ class Paiement {
 
     QuerySnapshot snapshot = await paiementsRef.get();
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
+      Paiement paiement =
+          await paiementFromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;
@@ -90,7 +93,8 @@ class Paiement {
         .get();
 
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
+      Paiement paiement =
+          await paiementFromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;
@@ -123,7 +127,8 @@ class Paiement {
         .get();
 
     for (var doc in snapshot.docs) {
-      Paiement paiement = Paiement.fromJSON(doc.data() as Map<String, dynamic>);
+      Paiement paiement =
+          await paiementFromJSON(doc.data() as Map<String, dynamic>);
       collectionPaiement.add(paiement);
     }
     return collectionPaiement;

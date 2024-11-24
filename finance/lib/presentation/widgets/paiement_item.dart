@@ -47,7 +47,7 @@ class _PaiementItemState extends State<PaiementItem> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.item.motif,
+                  widget.item.categorieAssocier.libelleCategorie,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -4,13 +4,13 @@ class AjoutpaiementEvent {
 
 //APEvent => ajout paiement event
 class APEventCreate extends AjoutpaiementEvent {
-  final String motif;
+  final String categorie;
   final double montant;
   final DateTime datePaiement;
   final String commentaire;
 
   APEventCreate(
-    this.motif,
+    this.categorie,
     this.montant,
     this.datePaiement,
     this.commentaire,

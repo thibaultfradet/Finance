@@ -54,8 +54,10 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
               ),
               backgroundColor: const Color(0xFF151433),
             ),
-            body: state is AjoutpaiementStateInitial
-                ? SingleChildScrollView(
+            body: Stack(
+              children: [
+                if (state is AjoutpaiementStateInitial)
+                  SingleChildScrollView(
                     child: Center(
                       //Formualaire
                       child: Column(
@@ -157,8 +159,11 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                         ],
                       ),
                     ),
-                  )
-                : const CircularProgressIndicator(),
+                  ),
+                if (state is APELoading)
+                  const Center(child: CircularProgressIndicator()),
+              ],
+            ),
           );
         },
       ),

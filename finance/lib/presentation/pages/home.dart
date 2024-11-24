@@ -1,5 +1,6 @@
 import 'package:finance/presentation/blocs/home/home_event.dart';
 import 'package:finance/presentation/pages/ajout_paiement.dart';
+import 'package:finance/presentation/pages/statistique.dart';
 import 'package:finance/presentation/widgets/paiement_item.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:finance/presentation/widgets/horizontal_margin.dart';
@@ -55,11 +56,11 @@ class _HomeState extends State<Home> {
                     size: 30,
                   ),
                   onPressed: () {
-                    //Envoie vers l'utilisateur sur la page ajout d'un paiement
+                    //Envoie vers l'utilisateur sur la page statistiques
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AjoutPaiement(),
+                        builder: (context) => const Statistique(),
                       ),
                     );
                   },

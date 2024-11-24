@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
   AjoutPaiementBloc() : super(const AjoutpaiementStateInitial([])) {
+    //State initial
     on<AjoutpaiementEvent>((event, emit) async {
       //on emit un load le temps du chargement des données
       emit(const APELoading());
@@ -16,7 +17,7 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
     });
 
     //Event création d'un paiement
-    on<APEventCreate>((event, emit) {
+    on<APEventCreate>((event, emit) async {
       // on emet un loading le temps du traitement
       emit(const APELoading());
 
@@ -24,7 +25,8 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
         commentaire: event.commentaire,
         datePaiement: event.datePaiement,
         montant: event.montant,
-        motif: event.motif,
+        categorieAssocier:
+            await Categorie.empty().retrieveCategorie(event.categorie),
       );
 
       try {
