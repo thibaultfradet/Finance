@@ -50,4 +50,12 @@ class Categorie {
 
     return Categorie.fromJSON(dataInstrument!);
   }
+
+  Future<void> createCategorie(Categorie categorieCreate) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    DocumentReference docRef =
+        await db.collection("paiements").add(categorieCreate.toFirestore());
+    await docRef.update({'idCategorie': docRef.id});
+  }
 }

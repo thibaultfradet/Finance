@@ -5,6 +5,7 @@ import 'package:finance/domain/models/paiement.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeStateInitial([], 0)) {
+    //state initial
     on<HomeEvent>((event, emit) async {
       //En attendant la recuperation des données on emet un loading
       emit(const HomeLoading());

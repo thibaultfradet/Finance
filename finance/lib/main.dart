@@ -1,4 +1,5 @@
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_bloc.dart';
+import 'package:finance/presentation/blocs/compte/compte_bloc.dart';
 import 'package:finance/presentation/blocs/statistique/statistique_bloc.dart';
 import 'package:finance/presentation/pages/home.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,9 @@ void main() async {
         ),
         BlocProvider<StatistiqueBloc>(
           create: (_) => StatistiqueBloc(),
+        ),
+        BlocProvider<CompteBloc>(
+          create: (_) => CompteBloc(),
         )
       ],
       child: const MyApp(),

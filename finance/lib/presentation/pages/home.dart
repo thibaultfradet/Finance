@@ -1,5 +1,6 @@
 import 'package:finance/presentation/blocs/home/home_event.dart';
 import 'package:finance/presentation/pages/ajout_paiement.dart';
+import 'package:finance/presentation/pages/compte.dart';
 import 'package:finance/presentation/pages/statistique.dart';
 import 'package:finance/presentation/widgets/paiement_item.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
@@ -28,17 +29,28 @@ class _HomeState extends State<Home> {
             backgroundColor: const Color(0xFF151433),
             appBar: AppBar(
               backgroundColor: const Color(0xFF151433),
-              title: const Row(
+              title: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20,
-                    child: Icon(Icons.person, size: 30),
+                  // Gesture detector => envoie l'utilisateur vers la page de compte
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Compte(),
+                        ),
+                      );
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                      child: Icon(Icons.person, size: 30),
+                    ),
                   ),
-                  Horirontalmargin(ratio: 0.02),
-                  Text(
+                  const Horirontalmargin(ratio: 0.02),
+                  const Text(
                     "Bienvenue Tibo",
                     style: TextStyle(
                       fontSize: 24,
