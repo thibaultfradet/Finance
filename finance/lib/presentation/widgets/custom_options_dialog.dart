@@ -1,4 +1,5 @@
 import 'package:finance/presentation/widgets/bouton_custom.dart';
+import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:flutter/material.dart';
 
 class CustomOptionsDialog extends StatefulWidget {
@@ -14,18 +15,38 @@ class _CustomOptionsDialogState extends State<CustomOptionsDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: const Color(0xFF151433),
-      content: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: widget.listeBoutons.length,
-        itemBuilder: (context, index) {
-          // TODO : Rajouter les référence au liste de map dynamique en paramètre
-          return BoutonCustom(
-              onpressed: () {
-                widget.listeBoutons[index];
-              },
-              texteValeur: widget.listeBoutons[index].toString());
-        },
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height *
+            0.16 *
+            widget.listeBoutons.length,
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height *
+                  0.16 *
+                  widget.listeBoutons.length,
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: widget.listeBoutons.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Verticalmargin(ratio: 0.02 * widget.listeBoutons.length),
+                      BoutonCustom(
+                        onpressed: widget.listeBoutons[index].values.first,
+                        texteValeur: widget.listeBoutons[index].keys.first,
+                        hauteur: 0.09,
+                      ),
+                      Verticalmargin(ratio: 0.02 * widget.listeBoutons.length),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -17,7 +17,7 @@ class Compte extends StatefulWidget {
 
 class _CompteState extends State<Compte> {
   /* Fonction affichage pop-up */
-  Future<void> temp() async {
+  Future<void> afficherModalAjout() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -54,14 +54,14 @@ class _CompteState extends State<Compte> {
           ),
           body: Stack(
             children: [
-              if (state != CompteStateLoading)
+              if (state is! CompteStateLoading)
                 //colonne de l'app
                 Column(
                   children: [
                     const Verticalmargin(ratio: 0.05),
                     //Bouton rajout categorie
                     Boutoncustomcompte(
-                      onpressed: temp,
+                      onpressed: afficherModalAjout,
                       texteValeur: "Ajouter une catégorie",
                     ),
                   ],

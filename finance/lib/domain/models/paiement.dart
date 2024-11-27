@@ -133,4 +133,9 @@ class Paiement {
     }
     return collectionPaiement;
   }
+
+  Future<void> deletePaiement(String idPaiement) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    await db.collection('paiements').doc(idPaiement).delete();
+  }
 }

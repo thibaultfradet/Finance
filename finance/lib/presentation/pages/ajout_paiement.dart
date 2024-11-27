@@ -1,4 +1,5 @@
 import 'package:finance/domain/models/categorie.dart';
+import 'package:finance/domain/models/paiement.dart';
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_bloc.dart';
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_event.dart';
 import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_state.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 
 class AjoutPaiement extends StatefulWidget {
-  const AjoutPaiement({super.key});
+  final Paiement? paiementAModifier;
+  const AjoutPaiement({super.key, this.paiementAModifier});
 
   @override
   State<AjoutPaiement> createState() => _AjoutPaiementState();

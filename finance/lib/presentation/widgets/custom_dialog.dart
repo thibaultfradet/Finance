@@ -49,7 +49,5 @@ class _CustomDialogState extends State<CustomDialog> {
         ),
       ],
     );
-
-    ;
   }
 }

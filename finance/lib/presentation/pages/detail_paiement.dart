@@ -1,8 +1,13 @@
 import 'package:finance/domain/models/paiement.dart';
 import 'package:finance/presentation/blocs/detail_paiement/detail_paiement_bloc.dart';
+import 'package:finance/presentation/blocs/detail_paiement/detail_paiement_event.dart';
 import 'package:finance/presentation/blocs/detail_paiement/detail_paiement_state.dart';
+import 'package:finance/presentation/pages/ajout_paiement.dart';
+import 'package:finance/presentation/pages/home.dart';
 import 'package:finance/presentation/widgets/custom_options_dialog.dart';
-import 'package:finance/presentation/widgets/input_custom_pl.dart';
+import 'package:finance/presentation/widgets/item_valider.dart';
+import 'package:finance/presentation/widgets/vertical_margin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,15 +21,37 @@ class DetailPaiement extends StatefulWidget {
 
 class _DetailPaiementState extends State<DetailPaiement> {
   /* Fonction affichage pop-up */
-  Future<void> temp() async {
+  Future<void> afficherOptions() async {
     showDialog(
       context: context,
       builder: (context) {
-        //TODO : rajouter les fonctions voidCallBack pour la suppresion et la modification
-        return CustomOptionsDialog([
-          {"Modifier le paiement", () {}},
-          {"Supprimer le paiement", () {}},
-        ]);
+        return CustomOptionsDialog(
+          listeBoutons: [
+            // modifier paiement on push l'utilisateur vers ajout paiement avec l'item en paramètre
+            {
+              "Modifier le paiement": () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AjoutPaiement(
+                      paiementAModifier: widget.paiementConcerner,
+                    ),
+                  ),
+                );
+              }
+            },
+            // supprimer paiement on récupère l'item et on déclenche l'event dans bloc
+            {
+              "Supprimer le paiement": () {
+                BlocProvider.of<DetailPaiementBloc>(context).add(
+                  DetailPaiementDelete(
+                    widget.paiementConcerner.idPaiement!,
+                  ),
+                );
+              }
+            },
+          ],
+        );
       },
     );
   }
@@ -33,9 +60,21 @@ class _DetailPaiementState extends State<DetailPaiement> {
   Widget build(BuildContext context) {
     return BlocBuilder<DetailPaiementBloc, DetailPaiementState>(
       builder: (BuildContext context, state) {
+        //success on push l'utilisateur sur home
+        if (state is DetailPaiementSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const Home()),
+              (Route<dynamic> route) => false,
+            );
+          });
+        }
         return Scaffold(
           backgroundColor: const Color(0xFF151433),
           appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.white,
+            ),
             backgroundColor: const Color(0xFF151433),
             title: const Text(
               "Détail du paiement",
@@ -44,40 +83,57 @@ class _DetailPaiementState extends State<DetailPaiement> {
             actions: [
               //Bouton pour les options => modifier / supprimer un paiement => on affiche la pop-up
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.keyboard_arrow_down),
+                onPressed: () {
+                  afficherOptions();
+                },
+                icon: const Icon(
+                  CupertinoIcons.ellipsis_vertical,
+                ),
               ),
             ],
           ),
           body:
               //colonne de la page
-              Column(
+              Stack(
             children: [
-              //Categorie du paiement
-              InputCustomPL(
-                controllerPL: TextEditingController(),
-                placeholder:
-                    widget.paiementConcerner.categorieAssocier.libelleCategorie,
-                enable: false,
-              ),
-              //Commentaire
-              InputCustomPL(
-                controllerPL: TextEditingController(),
-                placeholder: widget.paiementConcerner.commentaire,
-                enable: false,
-              ),
-              //montant
-              InputCustomPL(
-                controllerPL: TextEditingController(),
-                placeholder: "${widget.paiementConcerner.montant} €",
-                enable: false,
-              ),
-              //date paiement
-              InputCustomPL(
-                controllerPL: TextEditingController(),
-                placeholder: widget.paiementConcerner.datePaiement.toString(),
-                enable: false,
-              ),
+              if (state is! DetailPaiementStateLoading)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //Categorie du paiement
+                      ItemValider(
+                        titre: "Catégorie du paiement",
+                        valeur: widget.paiementConcerner.categorieAssocier
+                            .libelleCategorie,
+                      ),
+                      const Verticalmargin(ratio: 0.05),
+                      //Commentaire
+                      ItemValider(
+                        titre: "Commentaire du paiement",
+                        valeur: widget.paiementConcerner.commentaire,
+                      ),
+
+                      const Verticalmargin(ratio: 0.05),
+                      //montant
+                      ItemValider(
+                        titre: "Montant du paiement",
+                        valeur: widget.paiementConcerner.montant.toString(),
+                      ),
+
+                      const Verticalmargin(ratio: 0.05),
+                      //date paiement
+                      ItemValider(
+                        titre: "Date du paiement",
+                        valeur:
+                            '${widget.paiementConcerner.datePaiement.year}-${widget.paiementConcerner.datePaiement.month.toString().padLeft(2, '0')}-${widget.paiementConcerner.datePaiement.day.toString().padLeft(2, '0')}',
+                      ),
+                    ],
+                  ),
+                ),
+              if (state is DetailPaiementStateLoading)
+                const CircularProgressIndicator(),
             ],
           ),
         );
