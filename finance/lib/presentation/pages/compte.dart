@@ -18,7 +18,7 @@ class Compte extends StatefulWidget {
 class _CompteState extends State<Compte> {
   /* Fonction affichage pop-up */
   Future<void> afficherModalAjout() async {
-    showDialog(
+    final result = await showDialog(
       context: context,
       builder: (context) {
         return CustomDialog(
@@ -26,13 +26,27 @@ class _CompteState extends State<Compte> {
           textTitre: "Ajouter une catégorie",
         );
       },
-    ).then(
-      (nomCategorie) {
-        BlocProvider.of<CompteBloc>(context).add(
-          CompteEventAjoutCate(nomCategorie),
-        );
-      },
     );
+
+    //Si il y a bien un résultat => on créer en base la catégorie et on reset le texte
+    if (result != null && result.trim() != "") {
+      setState(() {
+        tecCategorie.text = "";
+      });
+      // On déclenche la création
+      BlocProvider.of<CompteBloc>(context).add(
+        CompteEventAjoutCate(result),
+      );
+    }
+    //Réponse vide on déclenche une erreur pour que le bloc emit un failure = reset contenu
+    else {
+      setState(() {
+        tecCategorie.text = "";
+      });
+      BlocProvider.of<CompteBloc>(context).add(
+        CompteEventCategorieEmpty(),
+      );
+    }
   }
 
   TextEditingController tecCategorie = TextEditingController();
@@ -40,6 +54,37 @@ class _CompteState extends State<Compte> {
   Widget build(BuildContext context) {
     return BlocBuilder<CompteBloc, CompteState>(
       builder: (BuildContext context, state) {
+        if (state is CompteStateSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Center(
+                    child: Text(
+                      'Création réussie.',
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        if (state is CompteStateFailure) {
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Center(
+                    child: Text(
+                      'Une erreur est survenue lors de la création.',
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+
         return Scaffold(
           backgroundColor: const Color(0xFF151433),
           appBar: AppBar(

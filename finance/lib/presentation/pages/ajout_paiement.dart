@@ -38,13 +38,16 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
             WidgetsBinding.instance.addPostFrameCallback(
               (_) {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const Home()),
+                    MaterialPageRoute(
+                      builder: (context) => const Home(),
+                    ),
                     (Route route) => false);
               },
             );
           }
 
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: const Color(0xFF151433),
             appBar: AppBar(
               iconTheme: const IconThemeData(
@@ -156,14 +159,15 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                               texteValeur: "VALIDER",
                             ),
                           ),
-
                           const Verticalmargin(ratio: 0.05)
                         ],
                       ),
                     ),
                   ),
                 if (state is APELoading)
-                  const Center(child: CircularProgressIndicator()),
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
               ],
             ),
           );

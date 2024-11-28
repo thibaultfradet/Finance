@@ -33,7 +33,7 @@ class Paiement {
       'datePaiement': datePaiement,
       'idPaiement': idPaiement,
       'montant': montant,
-      'categorie': categorieAssocier.idCategorie,
+      'idCategorie': categorieAssocier.idCategorie,
     };
   }
 

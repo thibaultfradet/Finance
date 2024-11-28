@@ -7,6 +7,7 @@ import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:finance/presentation/widgets/horizontal_margin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/presentation/blocs/home/home_bloc.dart';
 import 'package:finance/presentation/blocs/home/home_state.dart';
@@ -26,6 +27,7 @@ class _HomeState extends State<Home> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (BuildContext context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: const Color(0xFF151433),
             appBar: AppBar(
               backgroundColor: const Color(0xFF151433),

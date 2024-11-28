@@ -24,5 +24,10 @@ class CompteBloc extends Bloc<CompteEvent, CompteState> {
         emit(const CompteStateFailure());
       }
     });
+
+    //Utilisateur saisie un truc vide alors on emit un failure
+    on<CompteEventCategorieEmpty>((event, emit) {
+      emit(const CompteStateFailure());
+    });
   }
 }

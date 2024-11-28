@@ -70,6 +70,7 @@ class _DetailPaiementState extends State<DetailPaiement> {
           });
         }
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: const Color(0xFF151433),
           appBar: AppBar(
             iconTheme: const IconThemeData(

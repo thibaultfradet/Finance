@@ -55,7 +55,7 @@ class Categorie {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     DocumentReference docRef =
-        await db.collection("paiements").add(categorieCreate.toFirestore());
+        await db.collection("categories").add(categorieCreate.toFirestore());
     await docRef.update({'idCategorie': docRef.id});
   }
 }

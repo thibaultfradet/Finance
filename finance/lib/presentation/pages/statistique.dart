@@ -35,6 +35,7 @@ class _StatistiqueState extends State<Statistique> {
       child: BlocBuilder<StatistiqueBloc, StatistiqueState>(
         builder: (BuildContext context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: const Color(0xFF151433),
             appBar: AppBar(
               iconTheme: const IconThemeData(
@@ -54,13 +55,16 @@ class _StatistiqueState extends State<Statistique> {
                       children: [
                         //Drop down pour choisir la stat
                         SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
                               dropdownColor: Colors.grey,
                               //par défaut premier élément possible
                               value: selectedStat,
-                              icon: const Icon(Icons.arrow_drop_down,
-                                  color: Colors.white),
+                              icon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
                               style: const TextStyle(color: Colors.white),
                               onChanged: (String? newValue) {
                                 setState(
