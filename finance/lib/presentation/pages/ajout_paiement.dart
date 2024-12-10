@@ -6,6 +6,7 @@ import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_state.d
 import 'package:finance/presentation/pages/home.dart';
 
 import 'package:finance/presentation/widgets/bouton_custom.dart';
+import 'package:finance/presentation/widgets/custom_dropdown_item.dart';
 import 'package:finance/presentation/widgets/input_custom_pl.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
             ),
             body: Stack(
               children: [
-                if (state is AjoutpaiementStateInitial)
+                if (state is AjoutpaiementStateData)
                   SingleChildScrollView(
                     child: Center(
                       //Formualaire
@@ -76,30 +77,39 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                             ),
                           ),
                           const Verticalmargin(ratio: 0.05),
+
                           //ComboBox avec liste des categorie
-                          DropdownButton(
-                            // Initial Value
-                            value: state.categorieDisponible[0],
-
-                            // Down Arrow Icon
-                            icon: const Icon(Icons.keyboard_arrow_down),
-
-                            // Array list of items
-                            items: state.categorieDisponible
-                                .map((Categorie items) {
-                              return DropdownMenuItem(
-                                value: items.libelleCategorie,
-                                child: Text(items.libelleCategorie),
-                              );
-                            }).toList(),
-                            onChanged: (valeur) {
-                              setState(
-                                () {
-                                  categorieSelected = valeur.toString();
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              dropdownColor: Colors.grey,
+                              //par défaut premier élément possible
+                              value: state.categorieDisponible.isNotEmpty
+                                  ? state.categorieDisponible.first
+                                      .libelleCategorie
+                                  : null,
+                              // Down Arrow Icon
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              style: const TextStyle(color: Colors.white),
+                              onChanged: (String? valeur) {
+                                setState(
+                                  () {
+                                    categorieSelected = valeur!;
+                                  },
+                                );
+                              },
+                              items: state.categorieDisponible.map(
+                                (Categorie items) {
+                                  return DropdownMenuItem<String>(
+                                    value: items.libelleCategorie,
+                                    child: CustomDropdownItem(
+                                      valeur: items.libelleCategorie,
+                                    ),
+                                  );
                                 },
-                              );
-                            },
+                              ).toList(),
+                            ),
                           ),
+
                           const Verticalmargin(ratio: 0.05),
                           InputCustomPL(
                             controllerPL: tecCommentaire,
@@ -147,14 +157,35 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                             width: MediaQuery.of(context).size.width * 0.35,
                             child: BoutonCustom(
                               onpressed: () {
-                                BlocProvider.of<AjoutPaiementBloc>(context).add(
-                                  APEventCreate(
-                                    categorieSelected,
-                                    double.parse(tecMontant.text),
-                                    datePaiementSelectionner,
-                                    tecCommentaire.text,
-                                  ),
-                                );
+                                //avant de valider on vérifie que la catégorie sélectionner n'est pas null sinon on envoie un show dialog
+                                if (categorieSelected.isEmpty ||
+                                    double.tryParse(tecMontant.text) == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Center(
+                                        child: Text(
+                                          'Problème dans les informations renseignées.',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  BlocProvider.of<AjoutPaiementBloc>(context)
+                                      .add(
+                                    APEventCreate(
+                                      state.categorieDisponible
+                                          .where((item) =>
+                                              item.libelleCategorie ==
+                                              categorieSelected)
+                                          .first,
+                                      double.parse(tecMontant.text),
+                                      datePaiementSelectionner,
+                                      tecCommentaire.text,
+                                    ),
+                                  );
+                                }
                               },
                               texteValeur: "VALIDER",
                             ),

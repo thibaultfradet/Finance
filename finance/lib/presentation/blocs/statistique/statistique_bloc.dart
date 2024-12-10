@@ -6,6 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class StatistiqueBloc extends Bloc<StatistiqueEvent, StatistiqueState> {
   StatistiqueBloc() : super(const StatistiqueStateInitial([], [])) {
     //state initial
+    /* 
+    * Pour chaque paiement, si la catégorie n'existe pas encore dans la liste, on l'ajoute. 
+    * Dans tous les cas, on cumule le montant associé à cette catégorie.
+    */
     on<StatistiqueEvent>((event, emit) async {
       //on emit un load le temps du chargement des données
       emit(const StatistiqueLoading());
@@ -15,10 +19,6 @@ class StatistiqueBloc extends Bloc<StatistiqueEvent, StatistiqueState> {
       //dictionnaire key value pair => clé = idCategorie ; value = cumulatif des montant
       List<Map<String, dynamic>> listeCategorieMontant = [];
 
-/* 
-  Pour chaque paiement, si la catégorie n'existe pas encore dans la liste, on l'ajoute. 
-  Dans tous les cas, on cumule le montant associé à cette catégorie.
-*/
       for (Paiement paiement in paiementDisponible) {
         final idCategorie = paiement.categorieAssocier.libelleCategorie;
 
@@ -36,12 +36,14 @@ class StatistiqueBloc extends Bloc<StatistiqueEvent, StatistiqueState> {
 
         if (categorieExistante != null) {
           // Ajouter au montant existant
-          categorieExistante['sold'] += paiement.montant;
+          categorieExistante['sold'] =
+              (double.parse(categorieExistante['sold']) + paiement.montant)
+                  .toStringAsFixed(2);
         } else {
           // Ajouter une nouvelle catégorie
           listeCategorieMontant.add({
             'genre': idCategorie,
-            'sold': paiement.montant,
+            'sold': paiement.montant.toStringAsFixed(2),
           });
         }
       }

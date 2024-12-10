@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:finance/presentation/blocs/compte/compte_bloc.dart';
 import 'package:finance/presentation/blocs/compte/compte_event.dart';
 import 'package:finance/presentation/blocs/compte/compte_state.dart';
@@ -59,9 +61,11 @@ class _CompteState extends State<Compte> {
             (_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
+                  backgroundColor: Colors.green,
                   content: Center(
                     child: Text(
                       'Création réussie.',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -74,9 +78,11 @@ class _CompteState extends State<Compte> {
             (_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
+                  backgroundColor: Colors.red,
                   content: Center(
                     child: Text(
                       'Une erreur est survenue lors de la création.',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

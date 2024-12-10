@@ -5,8 +5,12 @@ abstract class AjoutpaiementState {
 }
 
 class AjoutpaiementStateInitial extends AjoutpaiementState {
+  const AjoutpaiementStateInitial();
+}
+
+class AjoutpaiementStateData extends AjoutpaiementState {
   final List<Categorie> categorieDisponible;
-  const AjoutpaiementStateInitial(this.categorieDisponible) : super();
+  const AjoutpaiementStateData(this.categorieDisponible) : super();
 }
 
 class APELoading extends AjoutpaiementState {

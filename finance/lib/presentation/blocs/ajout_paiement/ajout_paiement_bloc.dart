@@ -5,7 +5,7 @@ import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_state.d
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
-  AjoutPaiementBloc() : super(const AjoutpaiementStateInitial([])) {
+  AjoutPaiementBloc() : super(const AjoutpaiementStateInitial()) {
     //State initial
     on<AjoutpaiementEvent>((event, emit) async {
       //on emit un load le temps du chargement des données
@@ -13,7 +13,7 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
       //on récupère la liste des catégorie dispo
       List<Categorie> categorieDisponible =
           await Categorie.empty().findAllCategorie();
-      emit(AjoutpaiementStateInitial(categorieDisponible));
+      emit(AjoutpaiementStateData(categorieDisponible));
     });
 
     //Event création d'un paiement
@@ -25,8 +25,7 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
         commentaire: event.commentaire,
         datePaiement: event.datePaiement,
         montant: event.montant,
-        categorieAssocier:
-            await Categorie.empty().retrieveCategorie(event.categorie),
+        categorieAssocier: event.categorie,
       );
 
       try {
