@@ -2,6 +2,7 @@ import 'package:finance/presentation/blocs/ajout_paiement/ajout_paiement_bloc.da
 import 'package:finance/presentation/blocs/compte/compte_bloc.dart';
 import 'package:finance/presentation/blocs/detail_paiement/detail_paiement_bloc.dart';
 import 'package:finance/presentation/blocs/statistique/statistique_bloc.dart';
+import 'package:finance/presentation/blocs/tout_paiement/tout_paiement_bloc.dart';
 import 'package:finance/presentation/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:finance/firebase_options.dart';
@@ -31,6 +32,9 @@ void main() async {
         ),
         BlocProvider<DetailPaiementBloc>(
           create: (_) => DetailPaiementBloc(),
+        ),
+        BlocProvider<ToutPaiementBloc>(
+          create: (_) => ToutPaiementBloc(),
         )
       ],
       child: const MyApp(),

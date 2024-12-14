@@ -3,6 +3,7 @@
 import 'package:finance/presentation/blocs/compte/compte_bloc.dart';
 import 'package:finance/presentation/blocs/compte/compte_event.dart';
 import 'package:finance/presentation/blocs/compte/compte_state.dart';
+import 'package:finance/presentation/pages/tout_paiement.dart';
 import 'package:finance/presentation/widgets/bouton_custom_compte.dart';
 import 'package:finance/presentation/widgets/custom_dialog.dart';
 import 'package:finance/presentation/widgets/vertical_margin.dart';
@@ -114,6 +115,18 @@ class _CompteState extends State<Compte> {
                     Boutoncustomcompte(
                       onpressed: afficherModalAjout,
                       texteValeur: "Ajouter une catégorie",
+                    ),
+                    const Verticalmargin(ratio: 0.05),
+                    //bouton page tout les paiements
+                    Boutoncustomcompte(
+                      onpressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ToutPaiement(),
+                          ),
+                        );
+                      },
+                      texteValeur: "Touts les paiements",
                     ),
                   ],
                 ),
