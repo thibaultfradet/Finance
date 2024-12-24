@@ -55,43 +55,6 @@ class _StatistiqueState extends State<Statistique> {
                         ? const Text("Aucun paiement ce mois-ci")
                         : Column(
                             children: [
-                              //Drop down pour choisir la stat
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    dropdownColor: Colors.grey,
-                                    //par défaut premier élément possible
-                                    value: selectedStat,
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.white,
-                                    ),
-                                    style: const TextStyle(color: Colors.white),
-                                    onChanged: (String? newValue) {
-                                      setState(
-                                        () {
-                                          selectedStat = newValue!;
-                                        },
-                                      );
-                                    },
-                                    items: statPossible
-                                        .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        );
-                                      },
-                                    ).toList(),
-                                  ),
-                                ),
-                              ),
-
                               Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -111,11 +74,8 @@ class _StatistiqueState extends State<Statistique> {
                                             map['genre'] as String,
                                       ),
                                       'sold': Variable(
-                                        accessor: (Map map) => (
-                                          num.parse(
-                                            map['sold'].toStringAsFixed(2),
-                                          ),
-                                        ),
+                                        accessor: (Map map) =>
+                                            num.parse(map['sold'].toString()),
                                       ),
                                     },
                                     marks: [IntervalMark()],
