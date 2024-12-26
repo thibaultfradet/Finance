@@ -29,6 +29,24 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
 
   DateTime datePaiementSelectionner = DateTime.now();
 
+//Au chargement de la page
+  @override
+  void initState() {
+    //Si il s'agit bien d'une modification et non d'une création on va initialiser les champs avec les valeurs du paiement
+    if (widget.paiementAModifier != null) {
+      categorieSelected =
+          widget.paiementAModifier!.categorieAssocier.libelleCategorie;
+      tecMontant = TextEditingController(
+          text: widget.paiementAModifier!.montant.toString());
+      tecCommentaire =
+          TextEditingController(text: widget.paiementAModifier!.commentaire);
+
+      datePaiementSelectionner = widget.paiementAModifier!.datePaiement;
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -69,7 +87,7 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                       child: Column(
                         children: [
                           const Text(
-                            "AJOUTER UN PAIEMENT",
+                            "Ajouter un paiement",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 28,
@@ -183,6 +201,7 @@ class _AjoutPaiementState extends State<AjoutPaiement> {
                                       double.parse(tecMontant.text),
                                       datePaiementSelectionner,
                                       tecCommentaire.text,
+                                      widget.paiementAModifier?.idPaiement,
                                     ),
                                   );
                                 }

@@ -29,7 +29,9 @@ class AjoutPaiementBloc extends Bloc<AjoutpaiementEvent, AjoutpaiementState> {
       );
 
       try {
-        paiementTemp.createPaiement(paiementTemp);
+        event.idPaiementUpdate != null
+            ? paiementTemp.updatePaiement(paiementTemp, event.idPaiementUpdate!)
+            : paiementTemp.createPaiement(paiementTemp);
       } catch (e) {
         emit(const APEFailure());
         return;

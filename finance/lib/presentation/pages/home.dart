@@ -119,13 +119,12 @@ class _HomeState extends State<Home> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.grey.withOpacity(0.1),
-                                        Colors.grey.withOpacity(0.5),
-                                      ],
-                                    ),
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Colors.grey.withValues(alpha: 0.1),
+                                          Colors.grey.withValues(alpha: 0.5),
+                                        ]),
                                   ),
                                 ),
                                 // Cercle intérieur blanc

@@ -52,13 +52,21 @@ class Paiement {
 
   Future<void> createPaiement(Paiement paiementCreate) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    // DocumentReference doc = await db.collection("paiments").doc();
-
-    // doc.set()
 
     DocumentReference docRef =
         await db.collection("paiements").add(paiementCreate.toFirestore());
     await docRef.update({'idPaiement': docRef.id});
+  }
+
+  Future<void> updatePaiement(
+      Paiement paiementUpdate, String idPaiementUpdate) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    // Utiliser l'identifiant de document pour accéder au paiement à mettre à jour
+    DocumentReference docRef = db.collection("paiements").doc(idPaiementUpdate);
+
+    // Mettre à jour le document avec les nouvelles données
+    await docRef.update(paiementUpdate.toFirestore());
   }
 
   /* Fonction findAllPaiement qui retourne la liste de touts les paiements existant dans la base de données */

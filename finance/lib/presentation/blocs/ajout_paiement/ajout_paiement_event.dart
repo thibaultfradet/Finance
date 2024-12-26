@@ -10,11 +10,13 @@ class APEventCreate extends AjoutpaiementEvent {
   final double montant;
   final DateTime datePaiement;
   final String commentaire;
+  final String? idPaiementUpdate;
 
   APEventCreate(
     this.categorie,
     this.montant,
     this.datePaiement,
     this.commentaire,
+    this.idPaiementUpdate,
   ) : super();
 }
